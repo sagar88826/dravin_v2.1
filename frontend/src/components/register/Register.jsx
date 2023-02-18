@@ -14,7 +14,7 @@ function Register() {
     const clickSubmit = (e) => {
         e.preventDefault()
         const { username, email, password, cpassword } = data
-        fetch('/user', {
+        fetch('/user/signup', {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

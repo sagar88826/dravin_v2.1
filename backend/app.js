@@ -1,10 +1,14 @@
 const express = require('express')
 
-const userRouter = require("./routes/userRoutes")
+const router = require("./routes/userRoutes")
 
 const app = express()
 
 app.use(express.json())
-app.use("/user", userRouter)
+app.use((req, res, next) => {
+    console.log(req.headers)
+    next()
+})
+app.use("/user", router)
 
 module.exports = app
