@@ -1,5 +1,5 @@
 import './MainFeed.css';
-import SideMenu from './SideMenu/SideMenu';
+import SideMenu from '../SideMenu/SideMenu';
 import UploadBar from '../UserUpload/UploadBar';
 import NewsApi from './NewsApi';
 

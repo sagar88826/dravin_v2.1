@@ -35,14 +35,16 @@ exports.login = async (req, res) => {
         })
     // 2 verify email and password
     const user = await User.findOne({ email }).select("+password")
+    console.log(user)
     if (!user || !(await user.correctPassword(password, user.password)))
         return res.status(401).json({
             status: "email or password is incorrect"
         })
     let token = await generateToken(user._id)
-    res.status(200).json({
+    res.status(200).cookie("token", token).json({
         status: "Logged In successfully",
-        token
+        token,
+        name: user.username
     })
 }
 

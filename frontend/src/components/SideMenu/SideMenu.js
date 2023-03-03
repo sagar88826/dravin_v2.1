@@ -53,7 +53,7 @@ function SideMenu(props) {
           </Link>
         </div>
         <div className="main-menu">
-          <Link to="/VideoCall">
+          <Link to="/videomeet">
             <div className="home-icon">
               <i className="bi bi-camera-video"></i>
 

@@ -8,11 +8,6 @@ function Login() {
   const [data, setData] = useState({
     email: "", password: ""
   })
-  const clickChange = (e) => {
-    const name = e.target.name
-    const value = e.target.value
-    setData({ ...data, [name]: value })
-  }
 
   const submitChange = (e) => {
     const value = e.target.value
