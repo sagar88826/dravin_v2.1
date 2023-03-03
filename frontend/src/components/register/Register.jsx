@@ -11,18 +11,25 @@ function Register() {
         setData({ ...data, [name]: value })
     }
 
-    const clickSubmit = (e) => {
+    const clickSubmit = async (e) => {
         e.preventDefault()
         const { username, email, password, cpassword } = data
-        fetch('/user/signup', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                username, email, password, cpassword
+        try {
+            const log = await fetch('/user/signup', {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username, email, password, cpassword
+                })
             })
-        })
+            const nam = await log.json()
+            console.log(nam)
+        } catch (err) {
+            const error = await err.json()
+            console.log(error)
+        }
     }
 
     return (

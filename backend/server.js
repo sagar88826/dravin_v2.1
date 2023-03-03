@@ -8,7 +8,7 @@ mongoose.connect(process.env.DB, {
 }).then(() => {
     console.log("connected succfull to DB")
 }).catch((err) => {
-    console.log(er)
+    console.log(err)
 })
 
 app.listen(port, () => console.log(`server app listening on port ${port}!`))

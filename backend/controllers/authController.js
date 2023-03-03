@@ -2,14 +2,23 @@ const User = require('../models/userModel')
 const jwt = require("jsonwebtoken")
 const { promisify } = require("util")
 
+<<<<<<< HEAD
 const generateToken = (id) => {
     return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
+=======
+const generateToken = id => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: `${process.env.JWT_EXPIRES_IN}` })
+>>>>>>> 36a294f6e1aa9674255e4870dc3ab9409ba47201
 }
 
 exports.signUp = async (req, res) => {
     try {
         const newUser = await User.create(req.body)
+<<<<<<< HEAD
         let token = generateToken(newUser._id)
+=======
+        const token = generateToken(newUser._id)
+>>>>>>> 36a294f6e1aa9674255e4870dc3ab9409ba47201
         res.status(201).json({
             status: "success",
             token,
@@ -18,8 +27,9 @@ exports.signUp = async (req, res) => {
             }
         })
     } catch (err) {
-        console.log(err)
-        res.status(400).send("bad request")
+        res.status(400).json({
+            err
+        })
     }
 }
 
@@ -38,6 +48,7 @@ exports.login = async (req, res) => {
             status: "failed",
             message: "email or password is incorrect"
         })
+<<<<<<< HEAD
     let token = generateToken(user._id)
     console.log(token)
     res.status(200).json({
@@ -45,13 +56,22 @@ exports.login = async (req, res) => {
         token
     })
 
+=======
+    let token = await generateToken(user._id)
+    res.status(200).json({
+        status: "success",
+        message: "Logged In successfully",
+        token
+    })
+>>>>>>> 36a294f6e1aa9674255e4870dc3ab9409ba47201
 }
 
 exports.protect = async (req, res, next) => {
     let token
     // 1. check token if it is there or not
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
+    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer"))
         token = req.headers.authorization.split(" ")[1]
+<<<<<<< HEAD
     }
     // console.log(token)
     if (!token) {
@@ -66,4 +86,15 @@ exports.protect = async (req, res, next) => {
     } catch (err) {
         res.status(401).json({ err })
     }
+=======
+    if (!token)
+        return res.status(401).send("You are not Logged In, please login to get access")
+    // 2. verify token
+    try {
+        const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+        next()
+    } catch (err) {
+        res.status(401).json({ err })
+    }
+>>>>>>> 36a294f6e1aa9674255e4870dc3ab9409ba47201
 }
