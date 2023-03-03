@@ -11,7 +11,7 @@ exports.signUp = async (req, res) => {
         const newUser = await User.create(req.body)
         const token = generateToken(newUser._id)
         res.status(201).json({
-            status: "Successfully Logged In",
+            status: "successfully registered",
             token,
             data: {
                 user: newUser
@@ -28,6 +28,7 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
     // 1 check if password and email given or not
     const { email, password } = req.body
+    console.log(req.body)
     if (!email || !password)
         return res.status(401).json({
             status: "Please enter email or password"

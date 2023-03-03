@@ -1,6 +1,6 @@
 import React from "react";
 import "./Login.css";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom"
 import { useState } from "react";
 
 function Login() {
@@ -14,25 +14,33 @@ function Login() {
     setData({ ...data, [name]: value })
   }
 
+  const submitChange = (e) => {
+    const value = e.target.value
+    const name = e.target.name
+    console.log(name)
+    setData({ ...data, [name]: value })
+  }
+
   const clickSubmit = async (e) => {
     e.preventDefault()
-
     const { email, password } = data
     try {
-      const log = await fetch("user/login", {
+      const loginResponse = await fetch("/user/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({
+          email, password
+        })
       })
-      const message = await log.json()
-      window.alert(message.status)
-      navigate("/mainfeed")
+      const message = await loginResponse.json()
+      window.alert(message.message)
     } catch (err) {
-      const message = await err.json()
-      window.alert(message.status)
+      const error = await err.json()
+      console.log(error.message)
     }
+
   }
 
   return (
@@ -45,7 +53,7 @@ function Login() {
             <label htmlFor="email">Email</label>
           </div>
           <div>
-            <input name="email" value={data.email} onChange={clickChange}></input>
+            <input id="email" name="email" value={data.email} onChange={submitChange}></input>
           </div>
         </div>
         <div className="Login-box__form-content">
@@ -53,14 +61,14 @@ function Login() {
             <label htmlFor="password">Password</label>
           </div>
           <div>
-            <input name="password" value={data.password} onChange={clickChange}></input>
+            <input id="password" name="password" value={data.password} onChange={submitChange}></input>
           </div>
         </div>
 
-        <button className="btn-login" type="submit">Login</button>
+        <button type="submit" className="btn-login">Login</button>
 
         <p className="text-login">
-          Don't have account <Link to="/"><a href="/">Register</a></Link>
+          Don't have account <Link to='/'><a href="/">Register</a></Link>
         </p>
       </form>
     </div>
