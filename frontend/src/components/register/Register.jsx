@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import '../login/Login.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 function Register() {
+    let navigate = useNavigate()
     const [data, setData] = useState({
         username: "", email: "", password: "", cpassword: ""
     })
@@ -26,6 +27,7 @@ function Register() {
             })
             const nam = await log.json()
             window.alert(nam.status)
+            navigate("/mainfeed")
         } catch (err) {
             const error = await err.json()
             window.log(error.status)

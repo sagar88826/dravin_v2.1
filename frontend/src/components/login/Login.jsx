@@ -35,7 +35,8 @@ function Login() {
         })
       })
       const message = await loginResponse.json()
-      window.alert(message.message)
+      window.alert(message.status)
+      navigate("/mainfeed")
     } catch (err) {
       const error = await err.json()
       console.log(error.message)
