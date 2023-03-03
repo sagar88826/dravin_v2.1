@@ -1,10 +1,15 @@
 const User = require('../models/userModel')
 const jwt = require("jsonwebtoken")
+const { promisify } = require("util")
+
+const generateToken = (id) => {
+    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
+}
 
 exports.signUp = async (req, res) => {
     try {
         const newUser = await User.create(req.body)
-        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
+        let token = generateToken(newUser._id)
         res.status(201).json({
             status: "success",
             token,
@@ -28,24 +33,37 @@ exports.login = async (req, res) => {
         })
     // 2 verify email and password
     const user = await User.findOne({ email }).select("+password")
-    if (!user || !(user.correctPassword(password, user.password)))
-        res.status(401).json({
+    if (!user || !(await user.correctPassword(password, user.password)))
+        return res.status(401).json({
             status: "failed",
-            message: "Please provide valid email or password"
+            message: "email or password is incorrect"
         })
+    let token = generateToken(user._id)
+    console.log(token)
+    res.status(200).json({
+        status: "successfully logged in",
+        token
+    })
 
 }
 
-exports.protect = (req, res, next) => {
+exports.protect = async (req, res, next) => {
     let token
     // 1. check token if it is there or not
     if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
         token = req.headers.authorization.split(" ")[1]
-        return next()
     }
-    console.log(token)
+    // console.log(token)
     if (!token) {
         res.status(401).send("You are not Logged In, please login to get access")
     }
 
+    // 2. verify token
+    try {
+        const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+        console.log(decoded)
+        next()
+    } catch (err) {
+        res.status(401).json({ err })
+    }
 }
