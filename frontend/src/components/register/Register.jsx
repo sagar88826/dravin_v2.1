@@ -25,10 +25,10 @@ function Register() {
                 })
             })
             const nam = await log.json()
-            console.log(nam)
+            window.alert(nam.status)
         } catch (err) {
             const error = await err.json()
-            console.log(error)
+            window.log(error.status)
         }
     }
 
@@ -62,11 +62,11 @@ function Register() {
                     </div>
 
                     <button className="btn-login" type='submit'>Register</button>
-                    <Link to="/">
-                        <p className="text-login">
-                            Already have account ? <a href="/">Login</a>
-                        </p>
-                    </Link>
+
+                    <p className="text-login">
+                        Already have account ?<Link to="login"><a href="/">Login</a> </Link>
+                    </p>
+
                 </form>
             </div>
         </>
