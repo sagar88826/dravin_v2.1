@@ -56,10 +56,14 @@ exports.protect = async (req, res, next) => {
     if (!token)
         return res.status(401).send("You are not Logged In, please login to get access")
     // 2. verify token
-    try {
-        const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
-        next()
-    } catch (err) {
-        res.status(401).json({ err })
+    const decode = await promisify(jwt.verify)(token, process.env.JWT_SECRET)
+
+    // 3. check if user still exists
+    const freshUser = await User.findById(decode.id)
+    if (!freshUser) {
+        return res.status(401).json({
+            status: "User does not longer exists"
+        })
     }
+    next()
 }
