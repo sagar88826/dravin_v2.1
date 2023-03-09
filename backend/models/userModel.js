@@ -5,6 +5,10 @@ require("dotenv").config({ path: "../.env" })
 
 
 const userSchema = new mongoose.Schema({
+    avatar: {
+        public_id: String,
+        url: String
+    },
     username: String,
     email: {
         type: String,
@@ -21,7 +25,7 @@ const userSchema = new mongoose.Schema({
     },
     cpassword: {
         type: String,
-        required: true,
+        required: false,
         minlength: 8,
         validate: {
             validator: function (el) {
@@ -29,7 +33,27 @@ const userSchema = new mongoose.Schema({
             },
             message: "Password are not same"
         }
-    }
+    },
+    following: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    followers: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User"
+        }
+    ],
+    posts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Post"
+        }
+    ],
+
+
 })
 
 userSchema.pre("save", async function (next) {

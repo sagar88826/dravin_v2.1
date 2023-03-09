@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken")
 const { promisify } = require("util")
 
 const generateToken = id => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: `${process.env.JWT_EXPIRES_IN}` })
+    return jwt.sign({ id }, process.env.JWT_SECRET)
 }
 
 exports.signUp = async (req, res) => {
@@ -20,7 +20,7 @@ exports.signUp = async (req, res) => {
     } catch (err) {
         res.status(400).json({
             status: "User already exists",
-            err
+            message: err.message
         })
     }
 }
@@ -28,31 +28,33 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
     // 1 check if password and email given or not
     const { email, password } = req.body
-    console.log(req.body)
     if (!email || !password)
         return res.status(401).json({
             status: "Please enter email or password"
         })
     // 2 verify email and password
     const user = await User.findOne({ email }).select("+password")
-    console.log(user)
     if (!user || !(await user.correctPassword(password, user.password)))
         return res.status(401).json({
             status: "email or password is incorrect"
         })
     let token = await generateToken(user._id)
-    res.status(200).cookie("token", token).json({
+    const options = {
+        expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+        httpOnly: true
+
+    }
+    res.status(200).cookie("token", token, options).json({
         status: "Logged In successfully",
-        token,
         name: user.username
     })
 }
 
 exports.protect = async (req, res, next) => {
-    let token
-    // 1. check token if it is there or not
-    if (req.headers.authorization && req.headers.authorization.startsWith("Bearer"))
-        token = req.headers.authorization.split(" ")[1]
+
+
+    const token = req.cookies.token
+
     if (!token)
         return res.status(401).send("You are not Logged In, please login to get access")
     // 2. verify token
@@ -65,5 +67,9 @@ exports.protect = async (req, res, next) => {
             status: "User does not longer exists"
         })
     }
+
+    req.user = await User.findById(decode.id)
+
+
     next()
 }
