@@ -26,11 +26,16 @@ function Register() {
                 })
             })
             const nam = await log.json()
-            window.alert(nam.status)
-            navigate("/mainfeed")
+            if (log.status === 201) {
+                window.alert(nam.message)
+                navigate("/mainfeed")
+            } else {
+                window.alert(nam.message)
+            }
+
         } catch (err) {
             const error = await err.json()
-            window.log(error.status)
+            window.log(error.message)
         }
     }
 

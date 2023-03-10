@@ -11,7 +11,7 @@ exports.signUp = async (req, res) => {
         const newUser = await User.create(req.body)
         const token = generateToken(newUser._id)
         res.status(201).json({
-            status: "successfully registered",
+            message: "successfully registered",
             token,
             data: {
                 user: newUser
@@ -19,7 +19,7 @@ exports.signUp = async (req, res) => {
         })
     } catch (err) {
         res.status(400).json({
-            status: "User already exists",
+
             message: err.message
         })
     }
@@ -72,4 +72,16 @@ exports.protect = async (req, res, next) => {
 
 
     next()
+}
+
+exports.logout = (req, res) => {
+    try {
+        res.status(200).cookie("token", null, { expires: new Date(Date.now()) }).json({
+            message: "Logout successfully"
+        })
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
 }
