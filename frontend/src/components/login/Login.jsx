@@ -1,43 +1,50 @@
 import React from "react";
 import "./Login.css";
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loadingUserAction, loginAction } from "../../redux/action/userAction";
 
 function Login() {
-  let navigate = useNavigate()
+  const dispatch = useDispatch();
+  let navigate = useNavigate();
   const [data, setData] = useState({
-    email: "", password: ""
-  })
+    email: "",
+    password: "",
+  });
 
   const submitChange = (e) => {
-    const value = e.target.value
-    const name = e.target.name
-    console.log(name)
-    setData({ ...data, [name]: value })
-  }
+    const value = e.target.value;
+    const name = e.target.name;
+    console.log(name);
+    setData({ ...data, [name]: value });
+  };
 
   const clickSubmit = async (e) => {
-    e.preventDefault()
-    const { email, password } = data
-    try {
-      const loginResponse = await fetch("/user/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email, password
-        })
-      })
-      const message = await loginResponse.json()
-      window.alert(message.status)
-      navigate("/mainfeed")
-    } catch (err) {
-      const error = await err.json()
-      console.log(error.message)
-    }
+    e.preventDefault();
+    const { email, password } = data;
+    await dispatch(loginAction(email, password));
+    dispatch(loadingUserAction());
+    // try {
+    // const loginResponse = await fetch("/user/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({
+    //     email,
+    //     password,
+    //   }),
+    // });
 
-  }
+    // const message = await loginResponse.json();
+    // console.log(message.status);
+    // window.alert(message.status);
+    // } catch (err) {
+    //   const error = await err.json();
+    //   console.log(error.message);
+    // }
+  };
 
   return (
     <div className="Login-box">
@@ -49,7 +56,12 @@ function Login() {
             <label htmlFor="email">Email</label>
           </div>
           <div>
-            <input id="email" name="email" value={data.email} onChange={submitChange}></input>
+            <input
+              id="email"
+              name="email"
+              value={data.email}
+              onChange={submitChange}
+            ></input>
           </div>
         </div>
         <div className="Login-box__form-content">
@@ -57,14 +69,24 @@ function Login() {
             <label htmlFor="password">Password</label>
           </div>
           <div>
-            <input id="password" name="password" value={data.password} onChange={submitChange}></input>
+            <input
+              id="password"
+              name="password"
+              value={data.password}
+              onChange={submitChange}
+            ></input>
           </div>
         </div>
 
-        <button type="submit" className="btn-login">Login</button>
+        <button type="submit" className="btn-login">
+          Login
+        </button>
 
         <p className="text-login">
-          Don't have account <Link to='/'><a href="/">Register</a></Link>
+          Don't have account{" "}
+          <Link to="/">
+            <a href="/">Register</a>
+          </Link>
         </p>
       </form>
     </div>

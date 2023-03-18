@@ -1,7 +1,7 @@
-import React from 'react';
-import './MainFeed.css';
-import axios from 'axios';
-import { useEffect, useState } from 'react';
+import React from "react";
+import "./MainFeed.css";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function NewsApi(props) {
   const [apidata, setapiData] = useState([]);
@@ -10,7 +10,7 @@ function NewsApi(props) {
   useEffect(() => {
     axios
       .get(
-        'https://api.nytimes.com/svc/topstories/v2/world.json?api-key=MbAGWpZtPD4vOmTpoFwONWeEbTLVlWmP'
+        "https://api.nytimes.com/svc/topstories/v2/world.json?api-key=MbAGWpZtPD4vOmTpoFwONWeEbTLVlWmP"
       )
       .then((res) => setapiData(res.data.results));
   }, []);
@@ -46,16 +46,16 @@ function NewsApi(props) {
         <div className={`side-box ${props.theme}`}>
           <div className={`sb-header ${props.theme}`}>
             <p className={`sb-head ${props.theme}`}>
-              {' '}
+              {" "}
               <i
-                class="bi bi-chevron-double-left"
+                className="bi bi-chevron-double-left"
                 onClick={() => {
                   setIndex(index - 1);
                 }}
               ></i>
               # News Headlines
               <i
-                class="bi bi-chevron-double-right"
+                className="bi bi-chevron-double-right"
                 onClick={() => {
                   setIndex(index + 1);
                 }}
@@ -67,16 +67,16 @@ function NewsApi(props) {
             {apidata.map((a, indexNews) => {
               const { multimedia, title, published_date, created_date, url } =
                 a;
-              let position = 'nextSlide';
+              let position = "nextSlide";
               if (indexNews === index) {
-                position = 'activeSlide';
+                position = "activeSlide";
               }
               if (indexNews === index - 1) {
-                position = 'lastSlide';
+                position = "lastSlide";
               }
 
               return (
-                <article className={position} key={created_date}>
+                <article className={position} key={indexNews}>
                   <div className="image-container">
                     <img
                       src={
@@ -91,18 +91,19 @@ function NewsApi(props) {
                   </div>
                   <div className="title">
                     <p className="title-head">
-                      {title === ''
-                        ? 'Get Realtime Updated News from all Around the World. ~ New York Times '
+                      {title === ""
+                        ? "Get Realtime Updated News from all Around the World. ~ New York Times "
                         : title}
                     </p>
                     <p className="time">
-                      {published_date === ''
-                        ? 'Date Not Availabe'
+                      {published_date === ""
+                        ? "Date Not Availabe"
                         : published_date}
                     </p>
                     <a
-                      href={url === '' ? '404' : url}
-                      target="_blank" rel="noreferrer"
+                      href={url === "" ? "404" : url}
+                      target="_blank"
+                      rel="noreferrer"
                       className="title-body"
                     >
                       read more...
