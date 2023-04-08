@@ -24,26 +24,7 @@ function Login() {
     e.preventDefault();
     const { email, password } = data;
     await dispatch(loginAction(email, password));
-    dispatch(loadingUserAction());
-    // try {
-    // const loginResponse = await fetch("/user/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({
-    //     email,
-    //     password,
-    //   }),
-    // });
-
-    // const message = await loginResponse.json();
-    // console.log(message.status);
-    // window.alert(message.status);
-    // } catch (err) {
-    //   const error = await err.json();
-    //   console.log(error.message);
-    // }
+    await dispatch(loadingUserAction());
   };
 
   return (

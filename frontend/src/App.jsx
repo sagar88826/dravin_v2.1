@@ -19,7 +19,7 @@ function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={isAuthenticated ? <Mainfeed /> : <Login />} />
+        <Route path="/" element={isAuthenticated ? <Mainfeed /> : <Register />} />
         <Route path="login" element={<Login />} />
         <Route path="videomeet" element={<VideoMeet />} />
         <Route path="message" element={<Messages />} />
