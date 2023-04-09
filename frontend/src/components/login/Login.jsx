@@ -1,37 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { loadingUserAction, loginAction } from "../../redux/action/userAction";
 
 function Login() {
-  const dispatch = useDispatch();
-  let navigate = useNavigate();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const submitChange = (e) => {
+  const setChangedValue = (e) => {
     const value = e.target.value;
     const name = e.target.name;
-    console.log(name);
     setData({ ...data, [name]: value });
   };
 
-  const clickSubmit = async (e) => {
-    e.preventDefault();
-    const { email, password } = data;
-    await dispatch(loginAction(email, password));
-    await dispatch(loadingUserAction());
+  const submitClicked = async (e) => {
+
+
   };
 
   return (
     <div className="Login-box">
       <img src="images/logo.png" alt="logo"></img>
       <h1 className="Login-box__header">Login</h1>
-      <form onSubmit={clickSubmit}>
+      <form onSubmit={submitClicked}>
         <div className="Login-box__form-content">
           <div>
             <label htmlFor="email">Email</label>
@@ -41,7 +33,7 @@ function Login() {
               id="email"
               name="email"
               value={data.email}
-              onChange={submitChange}
+              onChange={setChangedValue}
             ></input>
           </div>
         </div>
@@ -54,7 +46,7 @@ function Login() {
               id="password"
               name="password"
               value={data.password}
-              onChange={submitChange}
+              onChange={setChangedValue}
             ></input>
           </div>
         </div>
@@ -64,9 +56,9 @@ function Login() {
         </button>
 
         <p className="text-login">
-          Don't have account{" "}
+          Don't have account
           <Link to="/">
-            <a href="/">Register</a>
+            Register
           </Link>
         </p>
       </form>

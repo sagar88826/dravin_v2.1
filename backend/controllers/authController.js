@@ -8,6 +8,7 @@ const generateToken = id => {
 
 exports.signUp = async (req, res) => {
     try {
+        console.log(req.body)
         const newUser = await User.create(req.body)
         const token = generateToken(newUser._id)
         res.status(201).json({
