@@ -1,8 +1,9 @@
 import React from 'react';
 import './sideMenu.css';
 import { Link } from 'react-router-dom';
-
+import { useSelector } from 'react-redux';
 function SideMenu(props) {
+  const user = useSelector((state) => state.users.user)
   return (
     <>
       {/* Toggle Button For Dark Mode  */}
@@ -72,13 +73,12 @@ function SideMenu(props) {
 
         {/* Footer For Login Icon */}
 
-        <div className={`sidebar-footer ${props.theme}`}>
+        <div className={`sidebar-footer`}>
           <div className="avatar">
-            <img src="images/sidebar/avatar.jpg" alt="" />
+            <img src="images/sidebar/avatar.jpg" alt="s" />
           </div>
-          <div className={`user-info ${props.theme}`}>
-            <h5>Dillin Nair</h5>
-            <p>Dillinnair@gmail.com</p>
+          <div className={`user-info `}>
+            <h5>{user.username}</h5>
           </div>
         </div>
       </div>

@@ -11,7 +11,12 @@ exports.signUp = async (req, res) => {
         console.log(req.body)
         const newUser = await User.create(req.body)
         const token = generateToken(newUser._id)
-        res.status(201).json({
+        const options = {
+            expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+            httpOnly: true
+
+        }
+        res.status(201).cookie("token", token, options).json({
             message: "successfully registered",
             token,
             data: {
@@ -47,7 +52,7 @@ exports.login = async (req, res) => {
     }
     res.status(200).cookie("token", token, options).json({
         status: "Logged In successfully",
-        name: user.username
+        user: user
     })
 }
 

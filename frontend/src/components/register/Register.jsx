@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import '../login/Login.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux"
 import { registerUser } from '../../redux/features/user/userSlice';
 function Register() {
-    const navigate = useNavigate()
     const dispatch = useDispatch()
     const { loading, user, error } = useSelector((state) => state.users)
-    // console.log(state)
     const [data, setData] = useState({
         username: "", email: "", password: "", cpassword: ""
     })
@@ -54,7 +52,7 @@ function Register() {
                     <button className="btn-login" type='submit'>Register</button>
                     {loading ? <p>Loading...</p> : null}
                     {!loading && error ? <p style={{ color: "red" }}>user already exists....</p> : null}
-                    <p className="text-login">Already have account ?<Link to="login">Login</Link></p>
+                    <p className="text-login">Already have account ?<Link to="/">Login</Link></p>
 
                 </form>
             </div>
