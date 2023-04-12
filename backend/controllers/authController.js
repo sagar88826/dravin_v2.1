@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
 }
 
 exports.protect = async (req, res, next) => {
-
+    console.log("request come at protect")
 
     const token = req.cookies.token
 

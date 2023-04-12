@@ -2,8 +2,11 @@ import './MainFeed.css';
 import SideMenu from '../SideMenu/SideMenu';
 import UploadBar from '../UserUpload/UploadBar';
 import NewsApi from './NewsApi';
-
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { getUser } from '../../redux/features/user/userSlice';
 function MainFeed(props) {
+  const dispatch = useDispatch()
   return (
     <>
       <SideMenu />
@@ -53,6 +56,7 @@ function MainFeed(props) {
 
         {/* Side Box For News and Api Related Work  */}
         <NewsApi theme={props.theme} />
+
       </div>
     </>
   );

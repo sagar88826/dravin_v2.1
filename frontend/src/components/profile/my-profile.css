@@ -1,0 +1,33 @@
+.my-profile{
+  margin:5rem 0 0 5rem;
+}
+
+.user-detail{
+  margin: 8rem 0 5rem 1rem;
+}
+
+.user-detail div{
+  margin-bottom: .5rem;
+}
+.user-detail input{
+  border-radius: .25rem;
+}
+.user-options button{
+  border: 1px solid;
+  border-radius: .25rem;
+  background-color: #e6e6e6;
+  padding: .25rem;
+  margin-left: 1rem;
+}
+
+.highlight{
+  background-color: #c5c5c5;
+  border-top-right-radius: .25rem;
+  border-top-left-radius: .25rem;
+  border-bottom: 1px solid #696969;
+}
+
+.user-header p{
+  cursor: pointer;
+  user-select: none;
+}

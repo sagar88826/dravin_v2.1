@@ -28,7 +28,6 @@ function NewsApi(props) {
   useEffect(() => {
     let slider = setInterval(() => {
       setIndex(index + 1);
-      console.log(slider);
     }, 5000);
     return () => {
       clearInterval(slider);
@@ -65,8 +64,7 @@ function NewsApi(props) {
 
           <div className="sb-content">
             {apidata.map((a, indexNews) => {
-              const { multimedia, title, published_date, created_date, url } =
-                a;
+              const { multimedia, title, published_date, url } = a;
               let position = "nextSlide";
               if (indexNews === index) {
                 position = "activeSlide";

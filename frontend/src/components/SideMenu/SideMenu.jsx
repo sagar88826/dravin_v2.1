@@ -1,23 +1,21 @@
 import React from 'react';
 import './sideMenu.css';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser } from '../../redux/features/user/userSlice';
 function SideMenu(props) {
   const user = useSelector((state) => state.users.user)
+  const dispatch = useDispatch()
+  const click = () => {
+    dispatch(logoutUser())
+  }
   return (
     <>
       {/* Toggle Button For Dark Mode  */}
       <div className="toggle-menu">
-        <div
-          className={`toggle-mode ${props.theme}`}
-          onClick={props.toggleButton}
-          theme={props.theme}
-        >
-          {props.theme === 'light' ? (
-            <i className="bi bi-moon-fill"></i>
-          ) : (
-            <i className="bi bi-sun-fill "></i>
-          )}
+        <div className={`toggle-mode ${props.theme}`} onClick={props.toggleButton} theme={props.theme}>
+          {/* {props.theme === 'light' ? <i className="bi bi-moon-fill"></i> : <i className="bi bi-sun-fill "></i>} */}
+          <i className="bi bi-power power" onClick={click}></i>
         </div>
       </div>
 
@@ -44,7 +42,7 @@ function SideMenu(props) {
         {/* Menu Bar  */}
 
         <div className="main-menu">
-          <Link to="/mainfeed">
+          <Link to="/">
             <li>
               <div className="home-icon">
                 <i className="bi bi-house"></i>
@@ -70,6 +68,14 @@ function SideMenu(props) {
             </div>
           </Link>
         </div>
+        <div className="main-menu">
+          <Link to="/search">
+            <div className="home-icon">
+              <i className="bi bi-search"></i>
+              <h4 className={`menu-name ${props.theme}`}>Search</h4>
+            </div>
+          </Link>
+        </div>
 
         {/* Footer For Login Icon */}
 
@@ -77,8 +83,10 @@ function SideMenu(props) {
           <div className="avatar">
             <img src="images/sidebar/avatar.jpg" alt="s" />
           </div>
-          <div className={`user-info `}>
-            <h5>{user.username}</h5>
+          <div className="user-info">
+            <Link to={"/profile"}>
+              <h5>{user.owner.username}</h5>
+            </Link>
           </div>
         </div>
       </div>

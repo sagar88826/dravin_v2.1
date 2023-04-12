@@ -5,7 +5,7 @@ const authController = require("../controllers/authController");
 
 router.post("/signup", authController.signUp);
 router.post("/login", authController.login);
-router.get("/logout", authController.protect, authController.logout);
+router.get("/logout", authController.logout);
 
 router.route("/:id").post(authController.protect, userController.follow);
 router
@@ -15,6 +15,7 @@ router
   .route("/my-profile")
   .get(authController.protect, userController.myProfile)
   .patch(authController.protect, userController.updateProfile);
+
 router
   .route("/update-password/:id")
   .patch(authController.protect, userController.updatePassword);

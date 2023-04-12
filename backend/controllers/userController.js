@@ -43,6 +43,7 @@ exports.findUser = async (req, res) => {
 
 exports.myProfile = async (req, res) => {
   try {
+    console.log("request come by getUser")
     const owner = await User.findById(req.user._id);
     res.status(200).json({
       status: "Successfull",

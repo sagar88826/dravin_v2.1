@@ -249,3 +249,9 @@ cursor: pointer;
 .bi.bi-chevron-double-right:hover{
   background-color: rgba(128, 128, 128, 0.346);
 }
+
+.power{
+  position: sticky;
+  top: 50rem;
+  left: 60rem;
+}

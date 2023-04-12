@@ -58,8 +58,6 @@ function Login() {
         <button type="submit" className="btn-login">
           Login
         </button>
-        {/* { user.isAuthenticated?n:} */}
-
         <p className="text-login">
           Don't have account
           <Link to="register">

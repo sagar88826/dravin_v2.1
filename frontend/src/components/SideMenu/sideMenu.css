@@ -149,6 +149,7 @@
   display: inline-block;
   transform: translateY(-20%);
   opacity: 1;
+  
 }
 
 .sidebar-footer .user-info.dark {
@@ -164,6 +165,7 @@
 .sidebar-footer .user-info h5 {
   font-size: 80%;
   margin-bottom: 3rem;
+  color: black;
 }
 
 .sidebar-footer .user-info p {

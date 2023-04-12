@@ -7,20 +7,25 @@ import VideoMeet from "./components/videomeeting/VideoMeet";
 import Messages from "./components/Messages/Messages";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import Search from "./components/search/Search";
+import Profile from "./components/profile/Profile";
+import { getUser } from "./redux/features/user/userSlice";
 function App() {
   const navigate = useNavigate()
   const user = useSelector(state => state.users)
+  const dispatch = useDispatch()
   useEffect(() => {
-    user.isAuthenticated ? navigate("mainfeed") : navigate("/")
-  }, [user])
+    dispatch(getUser())
+  }, [])
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="register" element={<Register />} />
-        <Route path="videomeet" element={<VideoMeet />} />
-        <Route path="message" element={<Messages />} />
-        <Route path="mainfeed" element={<Mainfeed />} />
+        <Route path="/" element={user.isAuthenticated ? <Mainfeed /> : <Login />} />
+        <Route path="register" element={user.isAuthenticated ? <Mainfeed /> : <Register />} />
+        <Route path="videomeet" element={user.isAuthenticated ? <VideoMeet /> : <Login />} />
+        <Route path="message" element={user.isAuthenticated ? <Messages /> : <Login />} />
+        <Route path="search" element={user.isAuthenticated ? <Search /> : <Login />} />
+        <Route path="profile" element={user.isAuthenticated ? <Profile /> : <Login />} />
       </Routes>
     </>
   );
