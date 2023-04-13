@@ -9,8 +9,8 @@ const generateToken = id => {
 exports.signUp = async (req, res) => {
     try {
         console.log(req.body)
-        const newUser = await User.create(req.body)
-        const token = generateToken(newUser._id)
+        const owner = await User.create(req.body)
+        const token = generateToken(owner._id)
         const options = {
             expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
             httpOnly: true
@@ -18,10 +18,7 @@ exports.signUp = async (req, res) => {
         }
         res.status(201).cookie("token", token, options).json({
             message: "successfully registered",
-            token,
-            data: {
-                user: newUser
-            }
+            owner
         })
     } catch (err) {
         res.status(400).json({

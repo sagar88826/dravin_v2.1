@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import "./Login.css";
-import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { loginUser } from "../../redux/features/user/userSlice";
 
 function Login() {
-  const user = useSelector((state) => state.users)
   const dispatch = useDispatch()
   const [data, setData] = useState({
     email: "",
@@ -59,10 +58,7 @@ function Login() {
           Login
         </button>
         <p className="text-login">
-          Don't have account
-          <Link to="register">
-            Register
-          </Link>
+          Don't have account <Link to="/register">Register</Link>
         </p>
       </form>
     </div>

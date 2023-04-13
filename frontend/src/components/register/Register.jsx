@@ -51,7 +51,7 @@ function Register() {
 
                     <button className="btn-login" type='submit'>Register</button>
                     {loading ? <p>Loading...</p> : null}
-                    {!loading && error ? <p style={{ color: "red" }}>user already exists....</p> : null}
+                    {!loading && error ? <p style={{ color: "red" }}>Invalid user details....</p> : null}
                     <p className="text-login">Already have account ?<Link to="/">Login</Link></p>
 
                 </form>

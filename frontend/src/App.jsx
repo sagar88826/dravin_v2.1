@@ -16,7 +16,7 @@ function App() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getUser())
-  }, [])
+  }, [user.isAuthenticated])
   return (
     <>
       <Routes>

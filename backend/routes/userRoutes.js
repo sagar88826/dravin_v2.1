@@ -17,10 +17,10 @@ router
   .patch(authController.protect, userController.updateProfile);
 
 router
-  .route("/update-password/:id")
+  .route("/update-password/")
   .patch(authController.protect, userController.updatePassword);
 router
-  .route("/delete-profile/:id")
+  .route("/delete-profile/")
   .delete(authController.protect, userController.deleteProfile);
 
 module.exports = router;

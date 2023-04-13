@@ -19,6 +19,20 @@ export const logoutUser = createAsyncThunk("user/logoutUser", () => {
 export const getUser = createAsyncThunk("user/getUser", () => {
     return axios.get("user/my-profile").then(response => response.data)
 })
+// 3. update profile
+export const updateUser = createAsyncThunk("user/updateUser", (data) => {
+    return axios.patch("user/my-profile", { ...data }).then(response => response.data)
+})
+// 4. update password
+export const updatePassword = createAsyncThunk("user/updatePassword", (data) => {
+    return axios.patch("user/update-password", { ...data }).then(response => response.data)
+})
+// 5. delete user
+export const deleteUser = createAsyncThunk("user/deleteUser", (data) => {
+    return axios.delete("user/delete-profile", { ...data }).then(response => response.data)
+})
+
+
 
 const userSlice = createSlice({
     name: "user",
@@ -31,6 +45,8 @@ const userSlice = createSlice({
         builder.addCase(registerUser.fulfilled, (state, action) => {
             state.loading = false
             state.isAuthenticated = true
+            state.user = action.payload
+            state.error = ""
         })
         builder.addCase(registerUser.rejected, (state, action) => {
             state.loading = false
@@ -44,9 +60,11 @@ const userSlice = createSlice({
         builder.addCase(loginUser.fulfilled, (state) => {
             state.loading = false
             state.isAuthenticated = true
+            state.error = ""
         })
         builder.addCase(loginUser.rejected, (state, action) => {
             state.loading = false
+            state.user = []
             state.error = action.error.message
             state.isAuthenticated = false
         })
@@ -62,16 +80,45 @@ const userSlice = createSlice({
         builder.addCase(getUser.fulfilled, (state, action) => {
             state.loading = false
             state.user = action.payload
-            console.log("triggerereeeeeeee")
             state.isAuthenticated = true
-            console.log(state.isAuthenticated)
+            state.error = ""
         })
         builder.addCase(getUser.rejected, (state, action) => {
             state.loading = false
-            state.error = action.error.message
             state.isAuthenticated = false
+            // state.error = action.payload
+            console.log(action.payload)
         })
 
+        // 5. Updating user
+        builder.addCase(updateUser.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(updateUser.fulfilled, (state, action) => {
+            console.log(action)
+            state.user = action.payload
+            state.loading = false
+            state.error = ""
+        })
+        // 6. Update password
+        builder.addCase(updatePassword.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(updatePassword.fulfilled, (state, action) => {
+            state.loading = false
+            console.log(action.payload)
+        })
+        builder.addCase(updatePassword.rejected, (state) => {
+            state.loading = false
+        })
+        // 7. delete user
+        builder.addCase(deleteUser.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(deleteUser.fulfilled, (state, action) => {
+            state.loading = false
+            state.isAuthenticated = false
+        })
 
     }
 })

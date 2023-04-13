@@ -43,10 +43,9 @@ exports.findUser = async (req, res) => {
 
 exports.myProfile = async (req, res) => {
   try {
-    console.log("request come by getUser")
     const owner = await User.findById(req.user._id);
     res.status(200).json({
-      status: "Successfull",
+      message: "Successfull",
       owner,
     });
   } catch (err) {
@@ -59,12 +58,11 @@ exports.myProfile = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const owner = await User.findById(req.params.id);
-    console.log(owner);
+    const owner = await User.findById(req.user._id);
     Object.assign(owner, { ...req.body });
     owner.save();
     res.status(200).json({
-      status: "Successfully updated",
+      message: "Successfully updated",
       owner,
     });
   } catch (err) {
@@ -77,7 +75,7 @@ exports.updateProfile = async (req, res) => {
 
 exports.updatePassword = async (req, res) => {
   try {
-    const owner = await User.findById(req.params.id).select("+password");
+    const owner = await User.findById(req.user._id).select("+password");
     if (await owner.correctPassword(req.body.oldPassword, owner.password)) {
       const password = req.body.newPassword;
       Object.assign(owner, { password });
@@ -99,7 +97,7 @@ exports.updatePassword = async (req, res) => {
 
 exports.deleteProfile = async (req, res) => {
   try {
-    const owner = await User.findByIdAndDelete(req.params.id);
+    const owner = await User.findByIdAndDelete(req.user._id);
     res.status(200).json({
       message: "Account deleted successfully",
       owner,

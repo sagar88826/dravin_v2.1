@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './my-profile.css';
 import SideMenu from '../SideMenu/SideMenu';
 import Myprofile from './Myprofile';
@@ -19,7 +19,7 @@ export default function Profile() {
                     <div className="user-header">
                         <p onClick={changeOption} className={!option ? highlight : null}>My profile</p>
                         <p onClick={changeOption} className={option ? highlight : null}>Followers</p>
-                        <i class="bi bi-person-fill"></i>
+                        <i className="bi bi-person-fill"></i>
                     </div>
                     {!option ? <Myprofile /> : <Follower />}
                 </div>
