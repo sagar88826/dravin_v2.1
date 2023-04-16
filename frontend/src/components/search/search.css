@@ -214,3 +214,12 @@
     margin: 2px 2px 0 0;
   }
   
+  .follow{
+    margin-left: 35rem;
+    padding: .5rem 1rem 0.5rem 1rem;
+  }
+
+  .follow:hover{
+    background-color: rgb(202, 145, 255);
+    border-color: blueviolet;
+  }

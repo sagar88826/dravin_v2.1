@@ -15,6 +15,7 @@ function App() {
   const user = useSelector(state => state.users)
   const dispatch = useDispatch()
   useEffect(() => {
+    console.log("getUser dispatched at app.js")
     dispatch(getUser())
   }, [user.isAuthenticated])
   return (

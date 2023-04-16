@@ -1,44 +1,22 @@
 import React from 'react'
-
+import { useSelector } from 'react-redux'
 const Follower = () => {
+    const { followers } = useSelector((state) => state.users.user.owner)
     return (
         <div>
-            <div className="user-name">
-                <div className="dp">
-                    <img src="images/sidebar/avatar.jpg" alt="" />
-                </div>
-                <div className="content">
-                    <p className="Name">Dillin Nair</p>
-                    <p className="R-msg">Rescent Message</p>
-                </div>
-            </div>
-            <div className="user-name">
-                <div className="dp">
-                    <img src="images/sidebar/avatar.jpg" alt="sdf" />
-                </div>
-                <div className="content">
-                    <p className="Name">Dillin Nair</p>
-                    <p className="R-msg">Rescent Message</p>
-                </div>
-            </div>
-            <div className="user-name">
-                <div className="dp">
-                    <img src="images/sidebar/avatar.jpg" alt="" />
-                </div>
-                <div className="content">
-                    <p className="Name">Dillin Nair</p>
-                    <p className="R-msg">Rescent Message</p>
-                </div>
-            </div>
-            <div className="user-name">
-                <div className="dp">
-                    <img src="images/sidebar/avatar.jpg" alt="" />
-                </div>
-                <div className="content">
-                    <p className="Name">Dillin Nair</p>
-                    <p className="R-msg">Recent Message</p>
-                </div>
-            </div>
+            {
+                followers.map(user => (
+                    <div className="user-name" key={user.id}>
+                        <div className="dp">
+                            <img src="images/sidebar/avatar.jpg" alt="" />
+                        </div>
+                        <div className="content">
+                            <p className="Name">{user.username}</p>
+                            <p className="R-msg">Rescent Message</p>
+                        </div>
+                    </div>
+                ))
+            }
         </div>
     )
 }

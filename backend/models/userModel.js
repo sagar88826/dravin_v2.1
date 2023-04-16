@@ -3,7 +3,7 @@ const validator = require("validator")
 const bcrypt = require("bcryptjs")
 require("dotenv").config({ path: "../.env" })
 
-
+console.log("ddddddddddheelllllooooddfsdkjfs")
 const userSchema = new mongoose.Schema({
     avatar: {
         public_id: String,
@@ -36,14 +36,14 @@ const userSchema = new mongoose.Schema({
     },
     following: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            // type: mongoose.Schema.Types.ObjectId,
+            // ref: "User"
         }
     ],
     followers: [
         {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "User"
+            // type: mongoose.Schema.Types.ObjectId,
+            // ref: "User"
         }
     ],
     posts: [

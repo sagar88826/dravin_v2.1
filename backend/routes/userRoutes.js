@@ -7,10 +7,8 @@ router.post("/signup", authController.signUp);
 router.post("/login", authController.login);
 router.get("/logout", authController.logout);
 
-router.route("/:id").post(authController.protect, userController.follow);
-router
-  .route("/find-user/:id")
-  .post(authController.protect, userController.findUser);
+router.route("/follow/").post(authController.protect, userController.follow);
+router.route("/find-user").post(authController.protect, userController.findUser);
 router
   .route("/my-profile")
   .get(authController.protect, userController.myProfile)

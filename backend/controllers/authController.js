@@ -54,7 +54,6 @@ exports.login = async (req, res) => {
 }
 
 exports.protect = async (req, res, next) => {
-    console.log("request come at protect")
 
     const token = req.cookies.token
 
@@ -74,7 +73,9 @@ exports.protect = async (req, res, next) => {
     req.user = await User.findById(decode.id)
 
 
+    console.log("request come at protectoreee", req.user)
     next()
+    console.log("after next()")
 }
 
 exports.logout = (req, res) => {

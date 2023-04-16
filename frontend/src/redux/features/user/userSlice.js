@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
-const initialState = {}
+const initialState = {
+    ft: false
+}
 // 1. Authentication
 export const registerUser = createAsyncThunk("user/registerUser", (data) => {
     return axios.post("user/signup", { ...data }).then(response => response.data)
@@ -30,6 +32,14 @@ export const updatePassword = createAsyncThunk("user/updatePassword", (data) => 
 // 5. delete user
 export const deleteUser = createAsyncThunk("user/deleteUser", (data) => {
     return axios.delete("user/delete-profile", { ...data }).then(response => response.data)
+})
+// 6. find user
+export const findUser = createAsyncThunk("user/findUser", (data) => {
+    return axios.post("user/find-user", { name: data }).then(response => response.data)
+})
+// 7. follow user
+export const followUser = createAsyncThunk("user/followUser", (data) => {
+    return axios.post("user/follow/", { ...data }).then(response => response.data)
 })
 
 
@@ -86,7 +96,7 @@ const userSlice = createSlice({
         builder.addCase(getUser.rejected, (state, action) => {
             state.loading = false
             state.isAuthenticated = false
-            // state.error = action.payload
+            state.error = action.error
             console.log(action.payload)
         })
 
@@ -115,10 +125,27 @@ const userSlice = createSlice({
         builder.addCase(deleteUser.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(deleteUser.fulfilled, (state, action) => {
+        builder.addCase(deleteUser.fulfilled, (state) => {
             state.loading = false
             state.isAuthenticated = false
         })
+        // 8. find user
+        builder.addCase(findUser.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(findUser.fulfilled, (state, action) => {
+            state.loading = false
+            console.log(action.payload)
+            state.foundUsers = action.payload.user
+        })
+        // 8. follow user
+        // builder.addCase(followUser.pending, (state) => {
+        //     state.loading = true
+        // })
+        builder.addCase(followUser.fulfilled, (state) => {
+            state.ft ? state.ft = false : state.ft = true
+        })
+
 
     }
 })
