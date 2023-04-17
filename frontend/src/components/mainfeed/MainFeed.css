@@ -72,7 +72,7 @@
 }
 
 .tile-container .tile-1 .box .box-header i {
-  color: #e1e1e1;
+  color: #2e2e2e;
 }
 
 .tile-container .tile-1 .box .box-content img {
@@ -254,4 +254,13 @@ cursor: pointer;
   position: sticky;
   top: 50rem;
   left: 60rem;
+}
+
+.caption{
+  margin-left: .5rem;
+  margin-bottom: .25rem;
+}
+
+.number-box{
+  margin-left: .25rem;
 }

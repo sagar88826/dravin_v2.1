@@ -3,7 +3,6 @@ const validator = require("validator")
 const bcrypt = require("bcryptjs")
 require("dotenv").config({ path: "../.env" })
 
-console.log("ddddddddddheelllllooooddfsdkjfs")
 const userSchema = new mongoose.Schema({
     avatar: {
         public_id: String,

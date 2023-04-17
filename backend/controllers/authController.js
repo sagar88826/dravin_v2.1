@@ -8,7 +8,6 @@ const generateToken = id => {
 
 exports.signUp = async (req, res) => {
     try {
-        console.log(req.body)
         const owner = await User.create(req.body)
         const token = generateToken(owner._id)
         const options = {
@@ -73,9 +72,8 @@ exports.protect = async (req, res, next) => {
     req.user = await User.findById(decode.id)
 
 
-    console.log("request come at protectoreee", req.user)
+    // console.log("request come at protectoreee", req.user)
     next()
-    console.log("after next()")
 }
 
 exports.logout = (req, res) => {

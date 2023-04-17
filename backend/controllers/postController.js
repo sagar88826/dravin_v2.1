@@ -3,6 +3,7 @@ const User = require('../models/userModel')
 
 exports.createPost = async (req, res) => {
     try {
+        console.log(req.body)
         const newPost = {
             caption: req.body.caption,
             image: {
@@ -102,27 +103,10 @@ exports.comments = async (req, res) => {
 
 exports.followeePost = async (req, res) => {
     try {
-        //     const user = await User.findById(req.user._id)
-
-        //     const arr = await user.following.map(async(value) => {
-        //         const people = User.findById(value).populate("posts")
-        //         // console.log(people)
-        //         people.posts.map((val) => {
-        //             // console.log(val)
-        //             return val
-        //         })
-        //     })
-        //     console.log(arr)
-        //     res.status(200).json({
-        //         message: "fetched",
-        //         arr
-        //     })
         const user = await User.findById(req.user._id)
-        const post = await Post.find({
-            owner: {
-                $in: user.following
-            }
-        }).populate("owner likes comments.user")
+        const Id = user.following.map(el => el.id)
+        console.log("user.following", Id)
+        const post = await Post.find({ owner: { $in: Id } }).populate("owner likes comments.user")
         res.status(200).json({
             message: "fetched",
             post

@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './UploadBar.css';
+import { useDispatch } from 'react-redux';
+import { createPost } from '../../redux/features/post/postSlice';
 export default function UploadBar(props) {
+  const [data, setData] = useState({
+    caption: ""
+  })
+  const dispatch = useDispatch()
   return (
     <>
       <div className={`mainUB ${props.theme}`}>
@@ -15,6 +21,10 @@ export default function UploadBar(props) {
             type="text"
             placeholder="what&#39;s happening?"
             size={50}
+            value={data.caption}
+            onChange={(e) => setData({
+              caption: e.target.value
+            })}
           />
           <span className="focus-border"></span>
         </div>
@@ -22,7 +32,7 @@ export default function UploadBar(props) {
           <i className="bi bi-image"></i>
         </div>
         <div className="post-area">
-          <button id="post-button">Post</button>
+          <button id="post-button" onClick={() => { dispatch(createPost(data)); setData({ caption: "" }) }}>Post</button>
         </div>
       </div>
     </>

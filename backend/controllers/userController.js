@@ -3,8 +3,6 @@ const User = require("./../models/userModel");
 exports.follow = async (req, res) => {
   const follower = await User.findById(req.user._id);
   const followee = await User.findById(req.body.id);
-  console.log(follower.following.includes(req.body.id))
-  console.log(req.body.id)
   const data = follower.following.find(el => el.id === req.body.id)
   if (data) {
     const index = follower.following.findIndex(element => element.id === req.body.id);
@@ -18,9 +16,8 @@ exports.follow = async (req, res) => {
       message: "unfollowed",
     });
   } else {
-    console.log("else trigeeeeeeeeeeredsafdfasdf")
     follower.following.push(req.body);
-    console.log(await follower.save())
+    await follower.save()
     followee.followers.push({ id: req.user.id, username: req.user.username });
     await followee.save();
     return res.status(200).json({
@@ -33,7 +30,6 @@ exports.follow = async (req, res) => {
 exports.findUser = async (req, res) => {
   try {
     const regex = new RegExp(`${req.body.name}`, "i")
-    console.log(regex)
     const user = await User.find({ username: regex }, "username _id");
     res.status(200).json({
       status: "Successfull",
