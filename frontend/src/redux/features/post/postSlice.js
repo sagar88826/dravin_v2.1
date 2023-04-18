@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 const initialState = {
-    triggered: false
+    triggered: false,
+    cState: false,
+    postId: ""
 }
 
 // 1.creating post
@@ -17,8 +19,8 @@ export const likeDislikePost = createAsyncThunk("post/likeDislikePost", (postId)
     return axios.get(`user/post/likes/${postId}`).then(response => response.data)
 })
 // 4.commenting post
-export const commentPost = createAsyncThunk("post/commentPost", (postId) => {
-    return axios.get(`user/post/comment/${postId}`).then(response => response.data)
+export const commentPost = createAsyncThunk("post/commentPost", (data) => {
+    return axios.post(`user/post/comment/${data.postId}`, { "comment": data.commentBody }).then(response => response.data)
 })
 // 5.followee posts
 export const followeePost = createAsyncThunk("post/followeePost", () => {
@@ -28,6 +30,12 @@ export const followeePost = createAsyncThunk("post/followeePost", () => {
 const postSlice = createSlice({
     name: "post",
     initialState,
+    reducers: {
+        comment: (state, action) => {
+            state.cState ? state.cState = false : state.cState = true
+            state.postId = action.payload
+        }
+    },
     extraReducers: builder => {
         // 1. create post
         builder.addCase(createPost.pending, (state) => {
@@ -67,7 +75,7 @@ const postSlice = createSlice({
         })
         builder.addCase(followeePost.fulfilled, (state, action) => {
             state.loading = false
-            state.post = action.payload.post
+            state.post = action.payload.post.reverse()
             // console.log(action.payload)
 
         })
@@ -75,3 +83,4 @@ const postSlice = createSlice({
 })
 
 export default postSlice.reducer
+export const { comment } = postSlice.actions

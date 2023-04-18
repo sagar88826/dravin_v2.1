@@ -264,3 +264,68 @@ cursor: pointer;
 .number-box{
   margin-left: .25rem;
 }
+/* *******************1. comment box *****************/
+.comment-box{
+  position: fixed;
+  z-index: 1;
+  background-color: #fff;
+  height: 35rem;
+  width: 25rem;
+  top: 5rem;
+  left: 24.25rem;
+  border-radius: 1rem;
+}
+.cross h2{
+  margin: 0rem 0 0 1rem;
+  display: inline-block;
+}
+.cross i{
+  margin: 0rem 0 0 14rem;
+}
+.cross {
+  margin: .5rem 0 0 0rem;
+}
+
+.comment-field{
+  /* background-color: red; */
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+.comment-field input{
+  margin-left: 1rem;
+  width:16rem;
+  border: none;
+  border-bottom: 1px solid;
+}
+.comment-field button{
+  margin-left: 1rem;
+  padding: .45rem;
+  border-radius: .8rem;
+  border: none
+}
+.comment-field img{
+  margin-top: .5rem;
+  height: 1rem;
+  border-radius: 1rem;
+}
+
+.comments{
+  margin: 1rem 0 0 1rem;
+}
+
+.comment-image{
+  position: relative;
+}
+
+.comment-image img{
+  height: 1rem;
+  border-radius: 1rem;
+  position: absolute;
+  top: .2rem;
+}
+.user{
+  font-size: small;
+  display: inline-block;
+  margin-left: 1.25rem;
+}

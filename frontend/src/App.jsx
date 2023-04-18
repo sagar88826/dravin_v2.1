@@ -10,14 +10,18 @@ import { useDispatch, useSelector } from "react-redux";
 import Search from "./components/search/Search";
 import Profile from "./components/profile/Profile";
 import { getUser } from "./redux/features/user/userSlice";
+import { followeePost } from "./redux/features/post/postSlice";
 function App() {
   const navigate = useNavigate()
+
   const user = useSelector(state => state.users)
+
   const dispatch = useDispatch()
   useEffect(() => {
     console.log("getUser dispatched at app.js")
     dispatch(getUser())
   }, [user.isAuthenticated])
+
   return (
     <>
       <Routes>
