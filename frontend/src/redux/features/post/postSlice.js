@@ -3,6 +3,7 @@ import axios from "axios"
 const initialState = {
     triggered: false,
     cState: false,
+    lState: false,
     postId: ""
 }
 
@@ -26,6 +27,10 @@ export const commentPost = createAsyncThunk("post/commentPost", (data) => {
 export const followeePost = createAsyncThunk("post/followeePost", () => {
     return axios.get("user/post/followee-post").then(response => response.data)
 })
+// 5.my posts
+export const myPost = createAsyncThunk("post/myPost", () => {
+    return axios.get("user/post/my-post").then(response => response.data)
+})
 
 const postSlice = createSlice({
     name: "post",
@@ -33,6 +38,10 @@ const postSlice = createSlice({
     reducers: {
         comment: (state, action) => {
             state.cState ? state.cState = false : state.cState = true
+            state.postId = action.payload
+        },
+        like: (state, action) => {
+            state.lState ? state.lState = false : state.lState = true
             state.postId = action.payload
         }
     },
@@ -76,11 +85,18 @@ const postSlice = createSlice({
         builder.addCase(followeePost.fulfilled, (state, action) => {
             state.loading = false
             state.post = action.payload.post.reverse()
-            // console.log(action.payload)
-
+        })
+        // 5. my post
+        builder.addCase(myPost.pending, (state) => {
+            state.loading = true
+        })
+        builder.addCase(myPost.fulfilled, (state, action) => {
+            state.loading = false
+            state.myPosts = action.payload.post.reverse()
+            // console.log(state.myPost)
         })
     }
 })
 
 export default postSlice.reducer
-export const { comment } = postSlice.actions
+export const { comment, like } = postSlice.actions

@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
 import "../MainFeed.css"
 import { useDispatch, useSelector } from 'react-redux'
-import { comment, commentPost } from '../../../redux/features/post/postSlice'
+import { comment, commentPost, myPost } from '../../../redux/features/post/postSlice'
 const Comment = () => {
     const dispatch = useDispatch()
     const { postId } = useSelector(state => state.posts)
-
-    const post = useSelector(state => state.posts.post.find(el => el._id === postId))
+    const post = useSelector(state => state.posts.myPosts.find(el => el._id === postId))
     const [data, setData] = useState({
         postId: postId,
         commentBody: ""
@@ -27,7 +26,7 @@ const Comment = () => {
                     <button onClick={() => { dispatch(commentPost(data)); setData({ ...data, commentBody: "" }) }} >comment</button>
                 </div>
                 {
-                    post.comments.map(element => (
+                    post ? post.comments.map(element => (
                         <div className='comments' key={element._id}>
                             <figure className='comment-image'>
                                 <img src="images/sidebar/avatar.jpg" alt="avatar" />
@@ -35,7 +34,7 @@ const Comment = () => {
                             </figure>
                             <div className='comment-body'>{element.comment}</div>
                         </div>
-                    ))
+                    )) : null
                 }
             </div >
 

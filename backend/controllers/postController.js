@@ -104,9 +104,26 @@ exports.comments = async (req, res) => {
 exports.followeePost = async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
-        const Id = user.following.map(el => el.id)
-        console.log("user.following", Id)
-        const post = await Post.find({ owner: { $in: Id } }).populate("owner likes comments.user")
+        const id = user.following.map(el => el.id)
+        const post = await Post.find({ owner: { $in: id } }).populate("owner likes comments.user")
+        res.status(200).json({
+            message: "fetched",
+            post
+        })
+
+    } catch (err) {
+        res.status(400).json({
+            message: err.message
+        })
+    }
+}
+
+exports.myPost = async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        const postId = user.posts.map(el => el._id)
+        console.log(postId)
+        const post = await Post.find({ _id: { $in: postId } }).populate("owner likes comments.user")
         res.status(200).json({
             message: "fetched",
             post

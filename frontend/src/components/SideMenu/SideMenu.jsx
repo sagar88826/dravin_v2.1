@@ -76,6 +76,14 @@ function SideMenu(props) {
             </div>
           </Link>
         </div>
+        <div className="main-menu">
+          <Link to="/mypost">
+            <div className="home-icon">
+              <i className="bi bi-file-post"></i>
+              <h4 className={`menu-name ${props.theme}`}>My post</h4>
+            </div>
+          </Link>
+        </div>
 
         {/* Footer For Login Icon */}
 

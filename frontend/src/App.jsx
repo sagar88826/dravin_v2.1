@@ -11,6 +11,7 @@ import Search from "./components/search/Search";
 import Profile from "./components/profile/Profile";
 import { getUser } from "./redux/features/user/userSlice";
 import { followeePost } from "./redux/features/post/postSlice";
+import Mypost from "./components/mypost/Mypost";
 function App() {
   const navigate = useNavigate()
 
@@ -18,7 +19,6 @@ function App() {
 
   const dispatch = useDispatch()
   useEffect(() => {
-    console.log("getUser dispatched at app.js")
     dispatch(getUser())
   }, [user.isAuthenticated])
 
@@ -31,6 +31,7 @@ function App() {
         <Route path="message" element={user.isAuthenticated ? <Messages /> : <Login />} />
         <Route path="search" element={user.isAuthenticated ? <Search /> : <Login />} />
         <Route path="profile" element={user.isAuthenticated ? <Profile /> : <Login />} />
+        <Route path="mypost" element={user.isAuthenticated ? <Mypost /> : <Login />} />
       </Routes>
     </>
   );

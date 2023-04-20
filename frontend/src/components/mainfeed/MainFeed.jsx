@@ -2,22 +2,24 @@ import './MainFeed.css';
 import SideMenu from '../SideMenu/SideMenu';
 import UploadBar from '../UserUpload/UploadBar';
 import NewsApi from './NewsApi';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { followeePost, likeDislikePost, commentPost } from '../../redux/features/post/postSlice';
+import { followeePost, likeDislikePost } from '../../redux/features/post/postSlice';
 import Comment from './comment-like/Comment';
-import { comment } from '../../redux/features/post/postSlice';
+import { comment, like } from '../../redux/features/post/postSlice';
+import Like from './comment-like/Like';
 function MainFeed(props) {
   const dispatch = useDispatch()
-  const { triggered, post, cState } = useSelector((state) => state.posts)
-
+  const { triggered, post, cState, lState } = useSelector((state) => state.posts)
+  const { user } = useSelector(state => state.users)
   useEffect(() => {
     dispatch(followeePost())
-  }, [triggered])
+  }, [triggered, dispatch])
   return (
     <>
       <SideMenu />
       {cState ? <Comment /> : null}
+      {lState ? <Like /> : null}
       <div className="tile-container">
         {/* Main Feed is Starts From Here  */}
         <div className="tile-1">
@@ -31,7 +33,6 @@ function MainFeed(props) {
                   <img src="images/sidebar/avatar.jpg" alt="avatar" />
                 </figure>
                 <p>{element.owner.username}</p>
-                <i className="bi bi-trash-fill"></i>
               </div>
               <div className={`box-content ${props.theme}`}>
                 <div className='caption'>{element.caption}</div>
@@ -43,8 +44,10 @@ function MainFeed(props) {
                   <span className='number-box'>{element.comments.length === 0 ? null : element.comments.length}</span>
                 </div>
                 <div>
-                  <i className="bi bi-heart" onClick={() => dispatch(likeDislikePost(element._id))}></i>
-                  <span className='number-box'>{element.likes.length === 0 ? null : element.likes.length}</span>
+                  {element.likes.find(el => el._id === user.owner._id)
+                    ? <i className="bi bi-heart-fill" onClick={() => dispatch(likeDislikePost(element._id))}></i>
+                    : <i className="bi bi-heart" onClick={() => dispatch(likeDislikePost(element._id))}></i>}
+                  <span className='number-box'>{element.likes.length === 0 ? null : <span onClick={() => dispatch(like(element._id))}>{element.likes.length}</span>}</span>
                 </div>
                 <i className="bi bi-send"></i>
               </div>
@@ -53,7 +56,7 @@ function MainFeed(props) {
         </div>
 
         {/* Side Box For News and Api Related Work  */}
-        <NewsApi theme={props.theme} />
+        <NewsApi />
 
       </div >
     </>

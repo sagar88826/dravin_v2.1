@@ -17,7 +17,6 @@ export default function Search() {
         dispatch(findUser(name))
     }
     useEffect(() => {
-        console.log("getUser dispatched at search.js")
         dispatch(getUser())
     }, [ft])
     return (
