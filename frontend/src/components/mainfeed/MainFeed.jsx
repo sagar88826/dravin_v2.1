@@ -30,13 +30,13 @@ function MainFeed(props) {
             <div className={`box`} key={element._id}>
               <div className={`box-header ${props.theme}`}>
                 <figure>
-                  <img src="images/sidebar/avatar.jpg" alt="avatar" />
+                  <img src={element.owner.avatar.url} alt="avatar" />
                 </figure>
                 <p>{element.owner.username}</p>
               </div>
+              <div className='caption'>{element.caption}</div>
               <div className={`box-content ${props.theme}`}>
-                <div className='caption'>{element.caption}</div>
-                <img src="images/sidebar/avatar.jpg" alt="avatar" />
+                {element.image ? <img src={element.image.url} alt="avatar" /> : null}
               </div>
               <div className={`box-footer ${props.theme}`}>
                 <div>

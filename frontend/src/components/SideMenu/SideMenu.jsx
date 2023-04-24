@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutUser } from '../../redux/features/user/userSlice';
 function SideMenu(props) {
-  const user = useSelector((state) => state.users.user)
+  const { user } = useSelector((state) => state.users)
   const dispatch = useDispatch()
   const click = () => {
     dispatch(logoutUser())
@@ -89,7 +89,7 @@ function SideMenu(props) {
 
         <div className={`sidebar-footer`}>
           <div className="avatar">
-            <img src="images/sidebar/avatar.jpg" alt="s" />
+            {user.owner.avatar ? <img src={user.owner.avatar.url} alt="s" /> : <img src="images/sidebar/profile-image.jpg" alt="profile-image" />}
           </div>
           <div className="user-info">
             <Link to={"/profile"}>

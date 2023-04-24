@@ -1,14 +1,27 @@
 const User = require('../models/userModel')
 const jwt = require("jsonwebtoken")
 const { promisify } = require("util")
-
+const cloudinary = require("cloudinary")
 const generateToken = id => {
     return jwt.sign({ id }, process.env.JWT_SECRET)
 }
-
 exports.signUp = async (req, res) => {
+    let result
     try {
-        const owner = await User.create(req.body)
+        let owner
+        const { email, password, cpassword, username } = req.body
+        if (req.files)
+            result = await cloudinary.uploader.upload(req.files.image.tempFilePath, (err, result) => {
+                result ? console.log(result) : console.log(err)
+            })
+        if (result) {
+            owner = await User.create({
+                email, password, cpassword, username,
+                avatar: { public_id: result.public_id, url: result.url }
+            })
+        } else {
+            owner = await User.create({ email, password, cpassword, username })
+        }
         const token = generateToken(owner._id)
         const options = {
             expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
@@ -20,8 +33,9 @@ exports.signUp = async (req, res) => {
             owner
         })
     } catch (err) {
+        if (result)
+            cloudinary.uploader.destroy(result.public_id)
         res.status(400).json({
-
             message: err.message
         })
     }
@@ -70,9 +84,6 @@ exports.protect = async (req, res, next) => {
     }
 
     req.user = await User.findById(decode.id)
-
-
-    // console.log("request come at protectoreee", req.user)
     next()
 }
 

@@ -1,16 +1,30 @@
 const Post = require("../models/postModel")
 const User = require('../models/userModel')
-
+const cloudinary = require("cloudinary")
 exports.createPost = async (req, res) => {
+
     try {
+        let results
+        if (req.files)
+            results = await cloudinary.uploader.upload(req.files.postImage.tempFilePath, (err, result) => {
+                result ? console.log(result) : console.log(err)
+            })
         console.log(req.body)
-        const newPost = {
-            caption: req.body.caption,
-            image: {
-                public_id: "coming soon",
-                url: "/"
-            },
-            owner: req.user._id
+        let newPost
+        if (results) {
+            newPost = {
+                caption: req.body.caption,
+                image: {
+                    public_id: results.public_id,
+                    url: results.url
+                },
+                owner: req.user._id
+            }
+        } else {
+            newPost = {
+                caption: req.body.caption,
+                owner: req.user._id
+            }
         }
         const post = await Post.create(newPost)
         const user = await User.findById(req.user._id)
@@ -18,7 +32,6 @@ exports.createPost = async (req, res) => {
         user.posts.unshift(post._id)
 
         await user.save()
-        console.log("post")
 
         res.status(201).json({
             status: "Success",
@@ -122,7 +135,6 @@ exports.myPost = async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
         const postId = user.posts.map(el => el._id)
-        console.log(postId)
         const post = await Post.find({ _id: { $in: postId } }).populate("owner likes comments.user")
         res.status(200).json({
             message: "fetched",

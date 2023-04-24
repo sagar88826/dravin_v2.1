@@ -4,20 +4,36 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux"
 import { registerUser } from '../../redux/features/user/userSlice';
 function Register() {
+    // 1. redux toolkit
     const dispatch = useDispatch()
     const { loading, user, error } = useSelector((state) => state.users)
+    // 2. useStates
     const [data, setData] = useState({
         username: "", email: "", password: "", cpassword: ""
     })
+    const [image, setImage] = useState()
+    // 3. functions
     const changeValue = (e) => {
         const value = e.target.value
         const name = e.target.name
         setData({ ...data, [name]: value })
     }
+    const changeImage = (e) => {
+        setImage(e.target.files[0])
+    }
 
     const submit = async (e) => {
+        const formData = new FormData()
+        formData.append("username", data.username)
+        formData.append("email", data.email)
+        formData.append("password", data.password)
+        formData.append("cpassword", data.cpassword)
+        formData.append("image", image)
+        for (const pair of formData.entries()) {
+            console.log(`${pair[0]} ${pair[1]}`)
+        }
+        dispatch(registerUser(formData))
         e.preventDefault()
-        dispatch(registerUser(data))
     }
 
     return (
@@ -48,7 +64,11 @@ function Register() {
                         <br></br>
                         <input name="cpassword" value={data.cpassword} onChange={changeValue}></input>
                     </div>
-
+                    <div className="Login-box__form-content" id='last_form-content'>
+                        <label htmlFor="profile-image">Upload profile image</label>
+                        <br></br><br />
+                        <input name="profile-image" type='file' onChange={changeImage}></input>
+                    </div>
                     <button className="btn-login" type='submit'>Register</button>
                     {loading ? <p>Loading...</p> : null}
                     {!loading && error ? <p style={{ color: "red" }}>Invalid user details....</p> : null}

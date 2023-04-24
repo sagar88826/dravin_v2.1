@@ -29,14 +29,14 @@ const Mypost = () => {
                         <div className={`box`} key={element._id}>
                             <div className={`box-header`}>
                                 <figure>
-                                    <img src="images/sidebar/avatar.jpg" alt="avatar" />
+                                    {user.owner.avatar ? <img src={user.owner.avatar.url} alt="s" /> : <img src="images/sidebar/profile-image.jpg" alt="profile-image" />}
                                 </figure>
                                 <p>{element.owner.username}</p>
                                 <i className="bi bi-trash-fill" onClick={() => dispatch(deletePost(element._id))}></i>
                             </div>
+                            <div className='caption'>{element.caption}</div>
                             <div className={`box-content`}>
-                                <div className='caption'>{element.caption}</div>
-                                <img src="images/sidebar/avatar.jpg" alt="avatar" />
+                                {element.image ? <img src={element.image.url} alt="avatar" /> : null}
                             </div>
                             <div className={`box-footer`}>
                                 <div>

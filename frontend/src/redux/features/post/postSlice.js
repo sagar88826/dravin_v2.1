@@ -9,7 +9,10 @@ const initialState = {
 
 // 1.creating post
 export const createPost = createAsyncThunk("post/createPost", (captionData) => {
-    return axios.post("user/post/upload", { ...captionData }).then(response => response.data)
+    for (const pair of captionData.entries()) {
+        console.log(`${pair[0]} ${pair[1]}`)
+    }
+    return axios.post("user/post/upload", captionData).then(response => response.data)
 })
 // 2.deleting post
 export const deletePost = createAsyncThunk("post/deletePost", (postId) => {
@@ -54,6 +57,10 @@ const postSlice = createSlice({
             state.loading = false
             state.triggered ? state.triggered = false : state.triggered = true
         })
+        builder.addCase(createPost.rejected, (state, action) => {
+            console.log(action.error)
+        })
+
         // 2. delete post
         builder.addCase(deletePost.pending, (state) => {
             state.loading = true

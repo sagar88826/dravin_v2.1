@@ -5,7 +5,10 @@ const initialState = {
 }
 // 1. Authentication
 export const registerUser = createAsyncThunk("user/registerUser", (data) => {
-    return axios.post("user/signup", { ...data }).then(response => response.data)
+    for (const pair of data.entries()) {
+        console.log(`${pair[0]} ${pair[1]}`)
+    }
+    return axios.post("user/signup", data).then(response => response.data)
 })
 
 export const loginUser = createAsyncThunk("user/loginUser", (data) => {

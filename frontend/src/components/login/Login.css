@@ -32,6 +32,13 @@
   border-bottom: 1px solid blueviolet;
   background-color: transparent;
 }
+#last_form-content input{
+  height: 2rem;
+  width: 13rem;
+  font-size: 1rem;
+  border: none;
+  background-color: transparent;
+}
 
 .Login-box__form-content input:hover {
   /* background-color: white; */

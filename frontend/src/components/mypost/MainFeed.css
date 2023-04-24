@@ -74,11 +74,9 @@
 .tile-container .tile-1 .box .box-header i {
   color: #2e2e2e;
 }
-
-.tile-container .tile-1 .box .box-content img {
-  object-fit: cover;
-  max-width: 100%;
-  max-height: 100%;
+.box-content{
+  display: flex;
+  justify-content: center;
 }
 
 .tile-container .tile-1 .box .box-footer {

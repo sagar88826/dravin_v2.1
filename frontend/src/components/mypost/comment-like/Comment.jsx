@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import "../MainFeed.css"
 import { useDispatch, useSelector } from 'react-redux'
-import { comment, commentPost, myPost } from '../../../redux/features/post/postSlice'
+import { comment, commentPost } from '../../../redux/features/post/postSlice'
 const Comment = () => {
     const dispatch = useDispatch()
     const { postId } = useSelector(state => state.posts)

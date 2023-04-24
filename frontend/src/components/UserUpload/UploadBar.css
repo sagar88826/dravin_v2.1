@@ -86,6 +86,10 @@ input[type='text'] {
   color: white;
 }
 
+.post-area input{
+  display: none;
+}
+
 #post-button {
   display: inline-block;
   text-decoration: none;
