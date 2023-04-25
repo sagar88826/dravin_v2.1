@@ -2,8 +2,6 @@ const app = require('./app')
 const mongoose = require("mongoose")
 const cloudinary = require("cloudinary").v2
 
-const port = 8000
-
 cloudinary.config({
     cloud_name: process.env.CLOUD_NAME,
     api_key: process.env.API_KEY,
@@ -16,7 +14,7 @@ mongoose.connect(process.env.DB, {
     useNewUrlParser: true
 }).then(() => {
     console.log("connected succfull to DB")
-    app.listen(port, () => console.log(`server app listening on port ${port}!`))
+    app.listen(process.env.PORT, () => console.log(`server app listening on port ${process.env.PORT}!`))
 }).catch((err) => {
     console.log(err)
 })
