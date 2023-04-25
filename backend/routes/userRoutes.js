@@ -2,7 +2,6 @@ const express = require("express");
 const router = express.Router();
 const userController = require("../controllers/userController");
 const authController = require("../controllers/authController");
-console.log("server triggered")
 router.post("/signup", authController.signUp);
 router.post("/login", authController.login);
 router.get("/logout", authController.logout);

@@ -1,16 +1,16 @@
 const Post = require("../models/postModel")
 const User = require('../models/userModel')
 const cloudinary = require("cloudinary")
+const path = require("path")
 exports.createPost = async (req, res) => {
-
     try {
         let results
         if (req.files)
             results = await cloudinary.uploader.upload(req.files.postImage.tempFilePath, (err, result) => {
                 result ? console.log(result) : console.log(err)
             })
-        console.log(req.body)
         let newPost
+        console.log(__dirname + "../models/postModel.js")
         if (results) {
             newPost = {
                 caption: req.body.caption,
@@ -90,7 +90,6 @@ exports.likeDislike = async (req, res) => {
             })
         }
     } catch (err) {
-        console.log(err)
         res.status(400).json({
             message: err.message
         })

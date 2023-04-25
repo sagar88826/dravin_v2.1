@@ -11,12 +11,12 @@ cloudinary.config({
 })
 
 mongoose.set('strictQuery', true);
+
 mongoose.connect(process.env.DB, {
     useNewUrlParser: true
 }).then(() => {
     console.log("connected succfull to DB")
+    app.listen(port, () => console.log(`server app listening on port ${port}!`))
 }).catch((err) => {
     console.log(err)
 })
-
-app.listen(port, () => console.log(`server app listening on port ${port}!`))
