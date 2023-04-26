@@ -30,7 +30,7 @@ exports.follow = async (req, res) => {
 exports.findUser = async (req, res) => {
   try {
     const regex = new RegExp(`${req.body.name}`, "i")
-    const user = await User.find({ username: regex }, "username _id");
+    const user = await User.find({ username: regex }, "username _id avatar");
     res.status(200).json({
       status: "Successfull",
       user

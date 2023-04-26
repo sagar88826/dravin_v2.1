@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../login/Login.css';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from "react-redux"
-import { registerUser } from '../../redux/features/user/userSlice';
+import { registerUser, resetError } from '../../redux/features/user/userSlice';
 function Register() {
-    // 1. redux toolkit
+    // 0. redux toolkit
     const dispatch = useDispatch()
-    const { loading, user, error } = useSelector((state) => state.users)
+    const { loading, error } = useSelector((state) => state.users)
+    // 1. useEffect
+    useEffect(() => {
+        dispatch(resetError())
+    }, [dispatch])
     // 2. useStates
     const [data, setData] = useState({
         username: "", email: "", password: "", cpassword: ""
@@ -29,9 +33,6 @@ function Register() {
         formData.append("password", data.password)
         formData.append("cpassword", data.cpassword)
         formData.append("image", image)
-        for (const pair of formData.entries()) {
-            console.log(`${pair[0]} ${pair[1]}`)
-        }
         dispatch(registerUser(formData))
         e.preventDefault()
     }
@@ -71,7 +72,7 @@ function Register() {
                     </div>
                     <button className="btn-login" type='submit'>Register</button>
                     {loading ? <p>Loading...</p> : null}
-                    {!loading && error ? <p style={{ color: "red" }}>Invalid user details....</p> : null}
+                    {error ? <p style={{ color: "red" }}>{error}</p> : null}
                     <p className="text-login">Already have account ?<Link to="/">Login</Link></p>
 
                 </form>

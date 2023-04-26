@@ -4,17 +4,16 @@ const initialState = {
     ft: false
 }
 // 1. Authentication
+// register
 export const registerUser = createAsyncThunk("user/registerUser", (data) => {
-    for (const pair of data.entries()) {
-        console.log(`${pair[0]} ${pair[1]}`)
-    }
-    return axios.post("user/signup", data).then(response => response.data)
+    return axios.post("user/signup", data).then(response => response.data).catch(err => err.response.data.message)
 })
-
+// login
 export const loginUser = createAsyncThunk("user/loginUser", (data) => {
     return axios.post("user/login", { ...data }).then(response => response.data)
+        .catch(err => err.response.data.status)
 })
-
+// logout
 export const logoutUser = createAsyncThunk("user/logoutUser", () => {
     return axios.get("user/logout")
 })
@@ -50,6 +49,11 @@ export const followUser = createAsyncThunk("user/followUser", (data) => {
 const userSlice = createSlice({
     name: "user",
     initialState,
+    reducers: {
+        resetError: (state) => {
+            state.error = undefined
+        }
+    },
     extraReducers: builder => {
         // 1. Registering user
         builder.addCase(registerUser.pending, (state) => {
@@ -57,33 +61,35 @@ const userSlice = createSlice({
         })
         builder.addCase(registerUser.fulfilled, (state, action) => {
             state.loading = false
-            state.isAuthenticated = true
-            state.user = action.payload
-            state.error = ""
-        })
-        builder.addCase(registerUser.rejected, (state, action) => {
-            state.loading = false
-            state.error = action.error.message
-            state.isAuthenticated = false
+            if (action.payload.owner) {
+                state.isAuthenticated = true
+                state.user = action.payload
+                state.error = undefined
+            } else {
+                if (action.payload.match(/User validation failed/i))
+                    state.error = "Invalid data entered"
+                else if (action.payload.match(/duplicate key/i))
+                    state.error = "User already exists"
+            }
         })
         // 2. Logging user
         builder.addCase(loginUser.pending, (state) => {
             state.loading = true
         })
-        builder.addCase(loginUser.fulfilled, (state) => {
+        builder.addCase(loginUser.fulfilled, (state, action) => {
             state.loading = false
-            state.isAuthenticated = true
-            state.error = ""
-        })
-        builder.addCase(loginUser.rejected, (state, action) => {
-            state.loading = false
-            state.user = []
-            state.error = action.error.message
-            state.isAuthenticated = false
+            if (action.payload.owner) {
+                state.user = action.payload
+                state.isAuthenticated = true
+                state.error = undefined
+            } else {
+                state.error = action.payload
+            }
         })
         // 3. logout user 
         builder.addCase(logoutUser.fulfilled, (state) => {
             state.isAuthenticated = false
+            state.user = ""
         })
 
         // 4. Getting user
@@ -94,13 +100,12 @@ const userSlice = createSlice({
             state.loading = false
             state.user = action.payload
             state.isAuthenticated = true
-            state.error = ""
+            state.error = undefined
         })
-        builder.addCase(getUser.rejected, (state, action) => {
+        builder.addCase(getUser.rejected, (state) => {
             state.loading = false
             state.isAuthenticated = false
-            state.error = action.error
-            console.log(action.payload)
+            // state.error = action.error
         })
 
         // 5. Updating user
@@ -108,10 +113,9 @@ const userSlice = createSlice({
             state.loading = true
         })
         builder.addCase(updateUser.fulfilled, (state, action) => {
-            console.log(action)
             state.user = action.payload
             state.loading = false
-            state.error = ""
+            state.error = undefined
         })
         // 6. Update password
         builder.addCase(updatePassword.pending, (state) => {
@@ -142,15 +146,14 @@ const userSlice = createSlice({
             state.foundUsers = action.payload.user
         })
         // 8. follow user
-        // builder.addCase(followUser.pending, (state) => {
-        //     state.loading = true
-        // })
+        builder.addCase(followUser.pending, (state) => {
+            state.loading = true
+        })
         builder.addCase(followUser.fulfilled, (state) => {
             state.ft ? state.ft = false : state.ft = true
         })
-
-
     }
 })
 
 export default userSlice.reducer
+export const { resetError } = userSlice.actions

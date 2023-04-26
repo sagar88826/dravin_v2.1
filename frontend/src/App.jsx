@@ -1,5 +1,5 @@
 import "./App.css";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Mainfeed from "./components/mainfeed/MainFeed";
@@ -10,17 +10,16 @@ import { useDispatch, useSelector } from "react-redux";
 import Search from "./components/search/Search";
 import Profile from "./components/profile/Profile";
 import { getUser } from "./redux/features/user/userSlice";
-import { followeePost } from "./redux/features/post/postSlice";
 import Mypost from "./components/mypost/Mypost";
 function App() {
-  const navigate = useNavigate()
+
 
   const user = useSelector(state => state.users)
 
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getUser())
-  }, [user.isAuthenticated])
+  }, [user.isAuthenticated, dispatch])
 
   return (
     <>

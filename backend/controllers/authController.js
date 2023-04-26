@@ -2,6 +2,7 @@ const User = require('../models/userModel')
 const jwt = require("jsonwebtoken")
 const { promisify } = require("util")
 const cloudinary = require("cloudinary")
+const { Promise } = require('mongoose')
 const generateToken = id => {
     return jwt.sign({ id }, process.env.JWT_SECRET)
 }
@@ -26,7 +27,6 @@ exports.signUp = async (req, res) => {
         const options = {
             expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
             httpOnly: true
-
         }
         res.status(201).cookie("token", token, options).json({
             message: "successfully registered",
@@ -42,28 +42,35 @@ exports.signUp = async (req, res) => {
 }
 
 exports.login = async (req, res) => {
-    // 1 check if password and email given or not
-    const { email, password } = req.body
-    if (!email || !password)
-        return res.status(401).json({
-            status: "Please enter email or password"
-        })
-    // 2 verify email and password
-    const user = await User.findOne({ email }).select("+password")
-    if (!user || !(await user.correctPassword(password, user.password)))
-        return res.status(401).json({
-            status: "email or password is incorrect"
-        })
-    let token = await generateToken(user._id)
-    const options = {
-        expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-        httpOnly: true
+    try {
+        // 1 check if password and email given or not
+        const { email, password } = req.body
+        if (!email || !password)
+            return res.status(401).json({
+                status: "Please enter email or password"
+            })
+        // 2 verify email and password
+        const user = await User.findOne({ email }).select("+password")
+        if (!user || !(await user.correctPassword(password, user.password)))
+            return res.status(401).json({
+                status: "email or password is incorrect"
+            })
+        let token = await generateToken(user._id)
+        const options = {
+            expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+            httpOnly: true
 
+        }
+        res.status(200).cookie("token", token, options).json({
+            message: "Logged In successfully",
+            owner: user
+        })
+    } catch (err) {
+        console.log(err)
+        res.status(200).json({
+            message: err.message
+        })
     }
-    res.status(200).cookie("token", token, options).json({
-        status: "Logged In successfully",
-        user: user
-    })
 }
 
 exports.protect = async (req, res, next) => {

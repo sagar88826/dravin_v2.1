@@ -18,7 +18,7 @@ export default function Search() {
     }
     useEffect(() => {
         dispatch(getUser())
-    }, [ft])
+    }, [ft, dispatch])
     return (
         <>
             <SideMenu />
@@ -35,7 +35,7 @@ export default function Search() {
                     {user ? user.map(user => (user._id !== _id ?
                         <div className="user-name" key={user._id}>
                             <div className="dp">
-                                <img src="images/sidebar/avatar.jpg" alt="" />
+                                {user.avatar ? <img src={user.avatar.url} alt="avatar" /> : null}
                             </div>
                             <div className="content">
                                 <p className="Name">{user.username}</p>

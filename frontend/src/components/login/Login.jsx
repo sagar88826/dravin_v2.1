@@ -1,16 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Login.css";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../../redux/features/user/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser, resetError } from "../../redux/features/user/userSlice";
 
 function Login() {
+  // redux
+  const user = useSelector(state => state.users)
   const dispatch = useDispatch()
+  // useEffect
+  useEffect(() => {
+    dispatch(resetError())
+  }, [dispatch])
+  // useState
   const [data, setData] = useState({
     email: "",
     password: "",
   });
-
+  // functions
   const changeValue = (e) => {
     const value = e.target.value;
     const name = e.target.name;
@@ -57,6 +64,8 @@ function Login() {
         <button type="submit" className="btn-login">
           Login
         </button>
+        {user.loading ? <p>Loading...</p> : null}
+        {user.error ? <p style={{ color: "red", fontSize: "15px" }}>{user.error}</p> : null}
         <p className="text-login">
           Don't have account <Link to="/register">Register</Link>
         </p>
