@@ -51,7 +51,7 @@ function SideMenu(props) {
             </li>
           </Link>
         </div>
-        <div className="main-menu">
+        {/* <div className="main-menu">
           <Link to="/videomeet">
             <div className="home-icon">
               <i className="bi bi-camera-video"></i>
@@ -67,7 +67,7 @@ function SideMenu(props) {
               <h4 className={`menu-name ${props.theme}`}>Message</h4>
             </div>
           </Link>
-        </div>
+        </div> */}
         <div className="main-menu">
           <Link to="/search">
             <div className="home-icon">

@@ -1,7 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
+import { myPost } from "../post/postSlice"
 const initialState = {
-    ft: false
+    ft: false,
+    displayNull: true
 }
 // 1. Authentication
 // register
@@ -75,9 +77,11 @@ const userSlice = createSlice({
         // 2. Logging user
         builder.addCase(loginUser.pending, (state) => {
             state.loading = true
+            state.progress = 30
         })
         builder.addCase(loginUser.fulfilled, (state, action) => {
             state.loading = false
+            state.progress = 100
             if (action.payload.owner) {
                 state.user = action.payload
                 state.isAuthenticated = true
@@ -87,71 +91,100 @@ const userSlice = createSlice({
             }
         })
         // 3. logout user 
+        builder.addCase(logoutUser.pending, (state) => {
+            state.progress = 30
+        })
         builder.addCase(logoutUser.fulfilled, (state) => {
+            state.progress = 100
             state.isAuthenticated = false
             state.user = ""
         })
 
         // 4. Getting user
         builder.addCase(getUser.pending, (state) => {
+            state.progress = 30
             state.loading = true
+            state.displayNull = true
         })
         builder.addCase(getUser.fulfilled, (state, action) => {
+            state.progress = 100
             state.loading = false
             state.user = action.payload
+            state.displayNull = false
             state.isAuthenticated = true
             state.error = undefined
         })
         builder.addCase(getUser.rejected, (state) => {
+            state.progress = 100
             state.loading = false
+            state.displayNull = false
             state.isAuthenticated = false
-            // state.error = action.error
         })
 
         // 5. Updating user
         builder.addCase(updateUser.pending, (state) => {
+            state.progress = 30
             state.loading = true
         })
         builder.addCase(updateUser.fulfilled, (state, action) => {
+            state.progress = 100
             state.user = action.payload
             state.loading = false
             state.error = undefined
         })
         // 6. Update password
         builder.addCase(updatePassword.pending, (state) => {
+            state.progress = 30
             state.loading = true
         })
         builder.addCase(updatePassword.fulfilled, (state, action) => {
+            state.progress = 100
             state.loading = false
-            console.log(action.payload)
         })
         builder.addCase(updatePassword.rejected, (state) => {
+            state.progress = 100
             state.loading = false
         })
         // 7. delete user
         builder.addCase(deleteUser.pending, (state) => {
+            state.progress = 30
             state.loading = true
         })
         builder.addCase(deleteUser.fulfilled, (state) => {
+            state.progress = 100
             state.loading = false
             state.isAuthenticated = false
         })
         // 8. find user
         builder.addCase(findUser.pending, (state) => {
+            state.displayNull = true
+            state.progress = 30
             state.loading = true
         })
         builder.addCase(findUser.fulfilled, (state, action) => {
+            state.displayNull = false
+            state.progress = 100
             state.loading = false
             console.log(action.payload)
             state.foundUsers = action.payload.user
         })
         // 8. follow user
         builder.addCase(followUser.pending, (state) => {
+            state.progress = 30
             state.loading = true
         })
         builder.addCase(followUser.fulfilled, (state) => {
+            state.progress = 100
             state.ft ? state.ft = false : state.ft = true
         })
+        // 9. my post
+        builder.addCase(myPost.pending, (state) => {
+            state.progress = 30
+        })
+        builder.addCase(myPost.fulfilled, (state) => {
+            state.progress = 100
+        })
+
     }
 })
 

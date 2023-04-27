@@ -30,7 +30,7 @@ function MainFeed(props) {
             <div className={`box`} key={element._id}>
               <div className={`box-header ${props.theme}`}>
                 <figure>
-                  <img src={element.owner.avatar.url} alt="avatar" />
+                  {element.owner.avatar ? <img src={element.owner.avatar.url} alt="avatar" /> : <img src="images/sidebar/profile-image.jpg" alt="profile-image" />}
                 </figure>
                 <p>{element.owner.username}</p>
               </div>

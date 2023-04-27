@@ -29,7 +29,6 @@ exports.signUp = async (req, res) => {
             httpOnly: true
         }
         res.status(201).cookie("token", token, options).json({
-            message: "successfully registered",
             owner
         })
     } catch (err) {
@@ -62,7 +61,6 @@ exports.login = async (req, res) => {
 
         }
         res.status(200).cookie("token", token, options).json({
-            message: "Logged In successfully",
             owner: user
         })
     } catch (err) {

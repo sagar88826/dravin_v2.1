@@ -29,13 +29,14 @@ export default function Search() {
                         <i className="bi bi-person-fill"></i>
                     </div>
                     <div className="search-bar">
-                        <input className="search-bar-component" placeholder="Search" value={name} onChange={changeName} />
+                        <input className="search-bar-component" type='text' placeholder="Search" value={name} onChange={changeName} />
+                        {/* <input className="search-bar-component" type="text" placeholder="Search" /> */}
                         <i className="bi bi-search" onClick={submitValue}></i>
                     </div>
                     {user ? user.map(user => (user._id !== _id ?
                         <div className="user-name" key={user._id}>
                             <div className="dp">
-                                {user.avatar ? <img src={user.avatar.url} alt="avatar" /> : null}
+                                {user.avatar ? <img src={user.avatar.url} alt="avatar" /> : <img src="images/sidebar/profile-image.jpg" alt="profile-image" />}
                             </div>
                             <div className="content">
                                 <p className="Name">{user.username}</p>

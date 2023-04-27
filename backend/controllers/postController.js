@@ -10,7 +10,6 @@ exports.createPost = async (req, res) => {
                 result ? console.log(result) : console.log(err)
             })
         let newPost
-        console.log(__dirname + "../models/postModel.js")
         if (results) {
             newPost = {
                 caption: req.body.caption,
@@ -119,7 +118,6 @@ exports.followeePost = async (req, res) => {
         const id = user.following.map(el => el.id)
         const post = await Post.find({ owner: { $in: id } }).populate("owner likes comments.user")
         res.status(200).json({
-            message: "fetched",
             post
         })
 
@@ -136,7 +134,6 @@ exports.myPost = async (req, res) => {
         const postId = user.posts.map(el => el._id)
         const post = await Post.find({ _id: { $in: postId } }).populate("owner likes comments.user")
         res.status(200).json({
-            message: "fetched",
             post
         })
 
