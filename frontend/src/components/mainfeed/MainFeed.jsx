@@ -52,7 +52,7 @@ function MainFeed(props) {
                 <i className="bi bi-send"></i>
               </div>
             </div>
-          )) : null}
+          )) : <p>No post yet</p>}
         </div>
 
         {/* Side Box For News and Api Related Work  */}

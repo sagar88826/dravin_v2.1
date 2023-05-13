@@ -59,9 +59,11 @@ const userSlice = createSlice({
     extraReducers: builder => {
         // 1. Registering user
         builder.addCase(registerUser.pending, (state) => {
+            state.progress = 30
             state.loading = true
         })
         builder.addCase(registerUser.fulfilled, (state, action) => {
+            state.progress = 100
             state.loading = false
             if (action.payload.owner) {
                 state.isAuthenticated = true
